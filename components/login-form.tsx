@@ -4,21 +4,20 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AlertCircle, Diamond, Lock, User } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { signIn } from "next-auth/react";
 
 export function LoginForm() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const router = useRouter()
-  const { login } = useAuth()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
@@ -28,16 +27,18 @@ export function LoginForm() {
       return
     }
 
-    // En un caso real, esto sería una llamada a una API
-    if (username === "admin" && password === "admin123") {
-      login({
-        id: "1",
-        name: "Administrador",
-        email: "admin@joyeria.com",
-      })
-      router.push("/dashboard")
+    const res = await signIn("credentials", {
+      email: username,
+      password: password,
+      redirect: false,
+    });
+
+    console.log(res)
+    if (res.error) {
+      setError(res.error)
     } else {
-      setError("Usuario o contraseña incorrectos")
+      router.push('/dashboard')
+      router.refresh()
     }
   }
 

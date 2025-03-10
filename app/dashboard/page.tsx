@@ -5,28 +5,17 @@ import { useRouter } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { JewelryList } from "@/components/jewelry-list"
 import { AddJewelryForm } from "@/components/add-jewelry-form"
-import { useAuth } from "@/lib/auth-context"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Dashboard() {
-  const { user, isAuthenticated } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/")
-    }
-  }, [isAuthenticated, router])
-
-  if (!isAuthenticated) {
-    return null
-  }
 
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
       <main className="container mx-auto py-6 px-4">
-        <h1 className="text-2xl font-bold mb-6">Bienvenido, {user?.name}</h1>
+        <h1 className="text-2xl font-bold mb-6">Bienvenido</h1>
 
         <Tabs defaultValue="inventory" className="w-full">
           <TabsList className="grid w-full max-w-md grid-cols-2 bg-secondary">
