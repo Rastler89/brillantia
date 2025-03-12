@@ -22,3 +22,46 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Mold {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  name            String
+  description     String?
+  status          String   @default("almacenado")
+  location        String?
+  moldMaterial    String
+  width           Float
+  height          Float
+  depth           Float
+  unit            String   @default("mm")
+  weight          Float
+  manufacturingDate DateTime?
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  castingMaterials CastingMaterial[]
+  techniques       Technique[]
+  jewelryIds       Jewelry[]
+}
+
+model CastingMaterial {
+  id    Int    @id @default(autoincrement())
+  name  String
+  mold  Mold   @relation(fields: [moldId], references: [id], onDelete: Cascade)
+  moldId Int
+}
+
+model Technique {
+  id    Int    @id @default(autoincrement())
+  name  String
+  mold  Mold   @relation(fields: [moldId], references: [id], onDelete: Cascade)
+  moldId Int
+}
+
+model Jewelry {
+  id    Int    @id @default(autoincrement())
+  name  String
+  mold  Mold   @relation(fields: [moldId], references: [id], onDelete: Cascade)
+  moldId Int
+}
