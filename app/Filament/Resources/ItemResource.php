@@ -4,15 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ItemResource\Pages;
 use App\Filament\Resources\ItemResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -36,6 +39,10 @@ class ItemResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->label('Nombre')
+                    ->required(),
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->label('Categoria')
                     ->required(),
                 FileUpload::make('image')
                     ->label('Imagen')
@@ -78,6 +85,19 @@ class ItemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('Añadir stock')
+                    ->form([
+                        TextInput::make('amount')
+                            ->label('Cantidad a añadir')
+                            ->numeric()
+                            ->required(),
+                    ])
+                    ->action(function (array $data, \App\Models\Item $record) {
+                        $record->increment('stock',$data['amount']);
+                        $record->save();
+                    })
+                    ->color('success')
+                    ->icon('heroicon-o-plus')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
