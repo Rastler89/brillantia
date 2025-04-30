@@ -76,7 +76,10 @@ class ItemResource extends Resource
             ->columns([
                 ImageColumn::make('image')->label('Imagen')->circular(),
                 TextColumn::make('name')->label('Nombre')->searchable(),
-                TextColumn::make('price')->label('Precio')->money('eur', true),
+                TextColumn::make('price')
+                    ->label('Precio')
+                    ->sortable()
+                    ->money('eur', true),
                 TextColumn::make('quantity')->label('Stock'),
                 IconColumn::make('is_active')->boolean()->label('Activo'),//
             ])
