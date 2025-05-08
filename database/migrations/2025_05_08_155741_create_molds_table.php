@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('molds', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('parent_id')->nullable()->constrained('categories');
+            $table->string('reference')->nullable();
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('status')->default('stored');
+            $table->string('localization')->nullable();
             $table->timestamps();
-        });
-
-        Schema::table('items', function (Blueprint $table) {
-            $table->foreignId('category_id')->nullable()->constrained('categories');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('molds');
     }
 };
