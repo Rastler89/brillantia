@@ -19,4 +19,8 @@ class Mold extends Model
     protected $casts = [
         'status' => MoldStatus::class,
     ];
+
+    public function items() {
+        return $this->belongsToMany(Item::class, 'item_mold');
+    }
 }

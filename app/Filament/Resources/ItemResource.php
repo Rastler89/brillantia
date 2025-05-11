@@ -96,7 +96,7 @@ class ItemResource extends Resource
                             ->required(),
                     ])
                     ->action(function (array $data, \App\Models\Item $record) {
-                        $record->increment('stock',$data['amount']);
+                        $record->increment('quantity',$data['amount']);
                         $record->save();
                     })
                     ->color('success')

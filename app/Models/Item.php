@@ -21,4 +21,8 @@ class Item extends Model
     public function category() {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function molds() {
+        return $this->belongsToMany(Mold::class, 'item_mold');
+    }
 }

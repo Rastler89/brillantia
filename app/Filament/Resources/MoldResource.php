@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MoldResource\Pages;
 use App\Filament\Resources\MoldResource\RelationManagers;
+use App\Filament\Resources\MoldResource\RelationManagers\ItemsRelationManager;
 use App\Models\Mold;
 use App\MoldStatus;
 use Filament\Forms;
@@ -49,7 +50,11 @@ class MoldResource extends Resource
                     ->options(collect(MoldStatus::cases())->mapWithKeys(fn ($case) => [
                         $case->value => ucfirst(strtolower(str_replace('_', ' ', $case->name))),
                     ])->toArray())
-                    ->required()
+                    ->required(),
+                Select::make('items')
+                    ->label('Piezas')
+                    ->multiple()
+                    ->relationship('items', 'name')
             ]);
     }
 
