@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('dni_nif');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('email');
-            $table->boolean('is_shop');
+            $table->string('dni_nif')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->boolean('is_shop')->default(false);
             $table->timestamps();
         });
     }
